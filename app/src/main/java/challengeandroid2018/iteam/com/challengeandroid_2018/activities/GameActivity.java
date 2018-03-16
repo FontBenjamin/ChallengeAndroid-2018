@@ -1,5 +1,6 @@
 package challengeandroid2018.iteam.com.challengeandroid_2018.activities;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -57,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
     private boolean gameOver = false;
-
+    private ValueAnimator va;
     private Timer timer = new Timer();
     private boolean adding = false;
     private ConstraintLayout constraintLayoutFloor;
@@ -316,7 +317,15 @@ public class GameActivity extends AppCompatActivity {
      */
     public void addWall(){
         // add the bottom part of the wall
-        ImageView wall = new ImageView(context);
+        final ImageView wall = new ImageView(context);
+        wall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewObstacleList.remove(wall);
+            }
+        });
+
+
         wall.setAdjustViewBounds(true);
         this.viewObstacleList.add(wall);
         wall.setId((int) Math.random());

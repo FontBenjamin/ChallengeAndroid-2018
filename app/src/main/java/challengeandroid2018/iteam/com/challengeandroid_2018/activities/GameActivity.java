@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -34,7 +35,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
+import challengeandroid2018.iteam.com.challengeandroid_2018.database.ScoreDAO;
 import challengeandroid2018.iteam.com.challengeandroid_2018.model.GameModeEnum;
+import challengeandroid2018.iteam.com.challengeandroid_2018.model.Score;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.Constant;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.AlertMessage;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.ShakeDetector;
@@ -414,8 +417,7 @@ public class GameActivity extends AppCompatActivity {
                             // handle colliding here
 
                             if(isViewOverlapping(viewObstacleList.get(i), imageViewCharacter) && gameOver == false){
-                                System.out.println("*************************");
-                                System.out.println(imageViewCharacter.getY());
+                                saveScore();
                                 gameOver = true;
                                 Intent gameOverIntent = new Intent(GameActivity.this, GameOverActivity.class);
                                 gameOverIntent.putExtra(Constant.INTENT_KEY_PLAYER_SCORE, scores);
@@ -496,4 +498,22 @@ public class GameActivity extends AppCompatActivity {
         }, 10, 2000);
     }
 
+    @Override
+    public void onBackPressed() {
+        saveScore();
+        super.onBackPressed();
+    }
+
+    private void saveScore(){
+        // Recovering of pseudo from SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Context.MODE_PRIVATE);
+        String pseudo = sharedPref.getString(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Constant.SHARED_PREFERENCES_KEY_PSEUDO);
+
+        Score score = new Score(pseudo, scores);
+        if(gameMode == 0){
+            ScoreDAO.addNormalScore(score, GameActivity.this);
+        }else{
+            ScoreDAO.addSpeedScore(score, GameActivity.this);
+        }
+    }
 }

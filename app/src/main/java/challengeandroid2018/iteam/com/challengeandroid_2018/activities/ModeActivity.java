@@ -23,6 +23,7 @@ public class ModeActivity extends AppCompatActivity {
         this.easyModeBtn = findViewById(R.id.easyModeBtn);
         this.speedModeBtn = findViewById(R.id.speedModeBtn);
 
+        //launch game with normal mode
         this.easyModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,6 +33,7 @@ public class ModeActivity extends AppCompatActivity {
             }
         });
 
+        //launch game with speed mode
         this.speedModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

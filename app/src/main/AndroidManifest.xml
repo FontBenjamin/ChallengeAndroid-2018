@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ModeActivity" />
-        <activity android:name=".activities.GameOverActivity" />
+        <activity android:name=".activities.GameOverActivity"
+            android:screenOrientation="landscape">
+        </activity>
         <activity android:name=".activities.ScoreActivity" />
         <activity android:name=".activities.GameActivity"
             android:screenOrientation="landscape">

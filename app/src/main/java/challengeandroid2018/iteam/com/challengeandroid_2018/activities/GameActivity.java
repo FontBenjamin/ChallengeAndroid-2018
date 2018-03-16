@@ -431,7 +431,7 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         for(int i = 0; i < viewObstacleList.size();i++){
-                            viewObstacleList.get(i).setX(viewObstacleList.get(i).getX()-1);
+                            viewObstacleList.get(i).setX(viewObstacleList.get(i).getX()-5);
                             viewObstacleList.get(i).bringToFront();
                             // handle colliding here
 

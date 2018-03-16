@@ -27,6 +27,8 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         pseudoEditText = (EditText) findViewById(R.id.pseudoEditText);
+        initPseudoEditTextView();
+
         pseudoEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -59,6 +61,14 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initPseudoEditTextView()
+    {
+        // Recovering of pseudo from SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Context.MODE_PRIVATE);
+        String pseudo = sharedPref.getString(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Constant.SHARED_PREFERENCES_KEY_PSEUDO);
+        pseudoEditText.setText(pseudo);
     }
 
     private void setPseudoOnSharedPreferences()

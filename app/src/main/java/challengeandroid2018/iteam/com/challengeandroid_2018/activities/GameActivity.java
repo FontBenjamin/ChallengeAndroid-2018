@@ -313,7 +313,6 @@ public class GameActivity extends AppCompatActivity {
         ImageView bump = new ImageView(context);
         bump.setAdjustViewBounds(true);
         bump.setBackground(getResources().getDrawable(R.drawable.spique));
-        bump.setBackgroundColor(Color.RED);
         this.viewObstacleList.add(bump);
         bump.setId((int) Math.random());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 150);

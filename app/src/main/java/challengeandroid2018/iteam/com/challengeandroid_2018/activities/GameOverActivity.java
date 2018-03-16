@@ -37,7 +37,7 @@ public class GameOverActivity extends AppCompatActivity {
         this.backMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(GameOverActivity.this, MenuActivity.class));
+                startActivity(new Intent(GameOverActivity.this, ModeActivity.class));
             }
         });
     }

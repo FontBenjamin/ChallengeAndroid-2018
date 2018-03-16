@@ -5,10 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +28,9 @@ import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,7 +38,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
+import challengeandroid2018.iteam.com.challengeandroid_2018.database.ScoreDAO;
 import challengeandroid2018.iteam.com.challengeandroid_2018.model.GameModeEnum;
+import challengeandroid2018.iteam.com.challengeandroid_2018.model.Score;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.Constant;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.AlertMessage;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.ShakeDetector;
@@ -42,7 +49,7 @@ import challengeandroid2018.iteam.com.challengeandroid_2018.util.Util;
 
 public class GameActivity extends AppCompatActivity {
 
-    private ImageView imageViewCharacter;
+    private VideoView imageViewCharacter;
 
     private ConstraintLayout constraintLayoutGameActivity;
 
@@ -61,12 +68,17 @@ public class GameActivity extends AppCompatActivity {
     private TiltDetector mTiltDetector;
     private Sensor magnetometer;
     private int scores;
+    private TextView textViewScore;
+    private int speed;
+    private int gameMode;
+    private int speedCounter;
 
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
     private boolean gameOver = false;
     private ValueAnimator va;
     private Timer timer = new Timer();
+    private Timer timerScore = new Timer();
     private boolean adding = false;
     private ConstraintLayout constraintLayoutFloor;
 
@@ -79,10 +91,10 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
-
+        this.textViewScore = findViewById(R.id.textViewScore);
         this.context = this;
         // we get the graphical elements
-        this.imageViewCharacter = (ImageView) findViewById(R.id.imageViewCharacter);
+        this.imageViewCharacter = (VideoView) findViewById(R.id.imageViewCharacter);
         this.constraintLayoutObstacleBird = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleBird);
         this.constraintLayoutObstacleBump = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleBump);
         this.constraintLayoutObstacleWall = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleWall);
@@ -91,6 +103,15 @@ public class GameActivity extends AppCompatActivity {
 
         // organizing the elements
         imageViewCharacter.bringToFront();
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.videorun;
+        imageViewCharacter.setVideoURI(Uri.parse(path));
+        imageViewCharacter.start();
+        imageViewCharacter.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
         constraintLayoutFloor.bringToFront();
 
         // ShakeDetector initialization
@@ -130,8 +151,18 @@ public class GameActivity extends AppCompatActivity {
             Util.displayErrorAlert(AlertMessage.SENSOR_ERROR_TYPE, AlertMessage.SENSOR_ERROR, this);
         }
 
-        //TODO update scores
-        scores = 1;
+        getGameMode();
+        this.speed = 5;
+        this.speedCounter = 0;
+
+        scores = 0;
+        animateObstacles();
+        incrementScore();
+    }
+
+    private void getGameMode() {
+        Intent i = getIntent();
+        int gameMode = i.getIntExtra(Constant.INTENT_KEY_GAME_MODE, 0);
     }
 
     private void handleTiltEvent(int count) {
@@ -335,11 +366,19 @@ public class GameActivity extends AppCompatActivity {
      * add a bump view on the layout and start moving it
      */
     public void addBird(){
-        ImageView bump = new ImageView(context);
+        VideoView bump = new VideoView(context);
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.shuriken;
+        bump.setVideoURI(Uri.parse(path));
+        bump.start();
+        bump.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
         this.viewObstacleList.add(bump);
         bump.setId((int) Math.random());
-        bump.setBackground(getResources().getDrawable(R.drawable.shurikenstable));
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 150);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         bump.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
         constraintLayoutObstacleBird.addView(bump);
@@ -362,6 +401,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewObstacleList.remove(wall);
+                constraintLayoutObstacleWall.removeView(wall);
             }
         });
 
@@ -396,8 +436,7 @@ public class GameActivity extends AppCompatActivity {
                             // handle colliding here
 
                             if(isViewOverlapping(viewObstacleList.get(i), imageViewCharacter) && gameOver == false){
-                                System.out.println("*************************");
-                                System.out.println(imageViewCharacter.getY());
+                                saveScore();
                                 gameOver = true;
                                 Intent gameOverIntent = new Intent(GameActivity.this, GameOverActivity.class);
                                 gameOverIntent.putExtra(Constant.INTENT_KEY_PLAYER_SCORE, scores);
@@ -438,10 +477,62 @@ public class GameActivity extends AppCompatActivity {
                                 addWall();
                             }
                         }
+
+                        if(gameMode == 1 && speedCounter == 5 ){
+                            speed+= 2;
+                            speedCounter = 0;
+                        }
                     }
                 });
             }
-        }, 10, 5);
+        }, 10, speed);
     }
 
+    private void incrementScore(){
+        timerScore.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                //Looper.prepare();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                       scores+= 1;
+                       textViewScore.setText("Score : " + scores);
+                    }
+                });
+            }
+        }, 10, 2000);
+    }
+
+    private void incrementSpeedCounter(){
+        timerScore.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                //Looper.prepare();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        speedCounter+= 1;
+                    }
+                });
+            }
+        }, 10, 2000);
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveScore();
+        super.onBackPressed();
+    }
+
+    private void saveScore(){
+        // Recovering of pseudo from SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Context.MODE_PRIVATE);
+        String pseudo = sharedPref.getString(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Constant.SHARED_PREFERENCES_KEY_PSEUDO);
+
+        Score score = new Score(pseudo, scores);
+        if(gameMode == 0){
+            ScoreDAO.addNormalScore(score, GameActivity.this);
+        }else{
+            ScoreDAO.addSpeedScore(score, GameActivity.this);
+        }
+    }
 }

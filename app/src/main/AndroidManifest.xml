@@ -19,7 +19,8 @@
         <activity android:name=".activities.ModeActivity" />
         <activity android:name=".activities.GameOverActivity" />
         <activity android:name=".activities.ScoreActivity" />
-        <activity android:name=".activities.GameActivity"></activity>
+        <activity android:name=".activities.GameActivity" />
+        <activity android:name=".activities.CreditsActivity" />
     </application>
 
 </manifest>

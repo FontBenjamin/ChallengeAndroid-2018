@@ -1,8 +1,10 @@
 package challengeandroid2018.iteam.com.challengeandroid_2018.activities;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.graphics.drawable.Drawable;
@@ -22,12 +24,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
+import util.GifAnimationDrawable;
+import util.GifImageView;
 import util.ShakeDetector;
 
 public class GameActivity extends AppCompatActivity {
@@ -78,13 +83,17 @@ public class GameActivity extends AppCompatActivity {
 
         // organizing the elements
         imageViewCharacter.bringToFront();
+        /**imageViewCharacter.setBackgroundResource(R.drawable.run);
+        AnimationDrawable anim = (AnimationDrawable) imageViewCharacter.getBackground();
+        anim.start();*/
+
+
         constraintLayoutFloor.bringToFront();
         // we add the listeners
         constraintLayoutGameActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 animateObstacles();
-
             }
         });
         imageViewCharacter.setOnClickListener(new View.OnClickListener() {
@@ -217,11 +226,11 @@ public class GameActivity extends AppCompatActivity {
      */
     public void addBump(){
         ImageView bump = new ImageView(context);
+        bump.setAdjustViewBounds(true);
+        bump.setBackground(getResources().getDrawable(R.drawable.bomb));
         this.viewObstacleList.add(bump);
-        bump.setBackgroundColor(Color.RED);
         bump.setId((int) Math.random());
-        bump.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background));
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 150);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 0);
         bump.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
         constraintLayoutObstacleBump.addView(bump);
@@ -254,9 +263,8 @@ public class GameActivity extends AppCompatActivity {
     public void addBird(){
         ImageView bump = new ImageView(context);
         this.viewObstacleList.add(bump);
-        bump.setBackgroundColor(Color.RED);
         bump.setId((int) Math.random());
-        bump.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background));
+        bump.setBackground(getResources().getDrawable(R.drawable.shurikenstable));
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 150);
         bump.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
@@ -277,10 +285,10 @@ public class GameActivity extends AppCompatActivity {
     public void addWall(){
         // add the bottom part of the wall
         ImageView wall = new ImageView(context);
+        wall.setAdjustViewBounds(true);
         this.viewObstacleList.add(wall);
-        wall.setBackgroundColor(Color.RED);
         wall.setId((int) Math.random());
-        wall.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background));
+        wall.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.wall));
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 0);
         wall.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();

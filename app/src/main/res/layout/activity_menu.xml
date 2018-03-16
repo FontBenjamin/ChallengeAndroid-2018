@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="challengeandroid2018.iteam.com.challengeandroid_2018.MainActivity">
+    tools:context="challengeandroid2018.iteam.com.challengeandroid_2018.activities.MenuActivity">
 
     <TextView
         android:layout_width="wrap_content"

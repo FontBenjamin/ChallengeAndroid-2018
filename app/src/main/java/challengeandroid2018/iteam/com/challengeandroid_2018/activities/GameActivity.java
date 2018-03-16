@@ -2,9 +2,12 @@ package challengeandroid2018.iteam.com.challengeandroid_2018.activities;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
+import util.ShakeDetector;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -21,6 +25,11 @@ public class GameActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayoutGameActivity;
 
     private Context context;
+
+    // The following are used for the shake detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,28 @@ public class GameActivity extends AppCompatActivity {
                 animateCharacterJump();
             }
         });
+
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+				/*
+				 * The following method, "handleShakeEvent(count):" is a stub //
+				 * method you would use to setup whatever you want done once the
+				 * device has been shook.
+				 */
+                handleShakeEvent(count);
+            }
+        });
+    }
+
+    private void handleShakeEvent(int count) {
+        Log.d("Shake ! Shake !", "Shake your milkshake !");
     }
 
     /**
@@ -78,5 +109,20 @@ public class GameActivity extends AppCompatActivity {
         });
         this.imageViewCharacter.startAnimation(jumpAnimation);
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        // Unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 }

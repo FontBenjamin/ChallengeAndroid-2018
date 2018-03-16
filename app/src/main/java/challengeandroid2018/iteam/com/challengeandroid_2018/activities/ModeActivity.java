@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
-import challengeandroid2018.iteam.com.challengeandroid_2018.Util.Constant;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.Constant;
 import challengeandroid2018.iteam.com.challengeandroid_2018.model.GameModeEnum;
 
 public class ModeActivity extends AppCompatActivity {

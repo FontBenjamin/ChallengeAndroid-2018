@@ -162,7 +162,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void getGameMode() {
         Intent i = getIntent();
-        int gameMode = i.getIntExtra(Constant.INTENT_KEY_GAME_MODE, 0);
+        //int gameMode = i.getIntExtra(Constant.INTENT_KEY_GAME_MODE, 0);
     }
 
     private void handleTiltEvent(int count) {

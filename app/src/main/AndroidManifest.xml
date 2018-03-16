@@ -10,17 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MenuActivity">
+
+        </activity>
+        <activity android:name=".activities.ModeActivity" />
+        <activity android:name=".activities.GameOverActivity" />
+        <activity android:name=".activities.ScoreActivity" />
+        <activity android:name=".activities.GameActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ModeActivity" />
-        <activity android:name=".activities.GameOverActivity" />
-        <activity android:name=".activities.ScoreActivity" />
-        <activity android:name=".activities.GameActivity"
-            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

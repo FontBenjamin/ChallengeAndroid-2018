@@ -1,4 +1,4 @@
-package util;
+package challengeandroid2018.iteam.com.challengeandroid_2018.util;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

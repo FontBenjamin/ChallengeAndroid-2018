@@ -1,19 +1,12 @@
 package challengeandroid2018.iteam.com.challengeandroid_2018.activities;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.content.ContextCompat;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,19 +18,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
-import util.AlertMessage;
-import util.GifAnimationDrawable;
-import util.GifImageView;
-import util.ShakeDetector;
-import util.TiltDetector;
-import util.Util;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.AlertMessage;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.ShakeDetector;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.TiltDetector;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.Util;
 
 public class GameActivity extends AppCompatActivity {
 

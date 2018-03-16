@@ -145,11 +145,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleTiltEvent(int count) {
+        animateCharacterCrouch();
         Log.d("Tilt !", "Don't bend your knees !");
 
     }
 
     private void handleShakeEvent(int count) {
+        animateCharacterJump();
         Log.d("Shake ! Shake !", "Shake your milkshake !");
     }
 

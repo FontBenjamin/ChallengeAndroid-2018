@@ -28,7 +28,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
+import util.AlertMessage;
 import util.ShakeDetector;
+import util.TiltDetector;
+import util.Util;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -48,6 +51,8 @@ public class GameActivity extends AppCompatActivity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+    private TiltDetector mTiltDetector;
+    private Sensor magnetometer;
 
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
@@ -92,19 +97,43 @@ public class GameActivity extends AppCompatActivity {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
-            @Override
-            public void onShake(int count) {
-				/*
-				 * The following method, "handleShakeEvent(count):" is a stub //
-				 * method you would use to setup whatever you want done once the
-				 * device has been shook.
-				 */
-                handleShakeEvent(count);
+        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+
+        if (mAccelerometer != null) {
+
+            mShakeDetector = new ShakeDetector();
+            mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+                @Override
+                public void onShake(int count) {
+                    handleShakeEvent(count);
+                }
+            });
+
+            if (magnetometer != null) {
+
+                mTiltDetector = new TiltDetector();
+                mTiltDetector.setOnTiltListener(new TiltDetector.OnTiltListener() {
+                    @Override
+                    public void onTilt(int count) {
+                        handleTiltEvent(count);
+                    }
+                } );
+
+            }else{
+                Util.displayErrorAlert(AlertMessage.SENSOR_ERROR_TYPE, AlertMessage.SENSOR_ERROR, this);
             }
-        });
+
+        }else{
+            Util.displayErrorAlert(AlertMessage.SENSOR_ERROR_TYPE, AlertMessage.SENSOR_ERROR, this);
+        }
+    }
+
+    private void handleTiltEvent(int count) {
+        Log.d("Tilt !", "Don't bend your knees !");
+
     }
 
     private void handleShakeEvent(int count) {
@@ -233,12 +262,15 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
         // Register the Session Manager Listener onResume
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mTiltDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(mTiltDetector, magnetometer, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
     public void onPause() {
         // Unregister the Sensor Manager onPause
         mSensorManager.unregisterListener(mShakeDetector);
+        mSensorManager.unregisterListener(mTiltDetector);
         super.onPause();
     }
 

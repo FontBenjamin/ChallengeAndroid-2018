@@ -10,6 +10,12 @@ public class Score {
     private String pseudo;
     private int score;
 
+    public Score( String pseudo, int score) {
+
+        this.pseudo = pseudo;
+        this.score = score;
+    }
+
     public int getIdScore() {
         return idScore;
     }
@@ -22,10 +28,7 @@ public class Score {
         return score;
     }
 
-    public Score(String pseudo, int score) {
-        this.pseudo = pseudo;
-        this.score = score;
-    }
+
 
     public String toString(){
         return this.pseudo+"\n" + this.score;

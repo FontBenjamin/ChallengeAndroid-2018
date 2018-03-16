@@ -12,14 +12,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String SPEEDSCORE_TABLE_CREATE = "CREATE TABLE SpeedScore (" +
             "idScore INTEGER PRIMARY KEY AUTOINCREMENT," +
             "pseudo  TEXT," +
-            "score INTEGER," +
+            "score INTEGER" +
 
             ");";
     
     public static final String NORMALSCORE_TABLE_CREATE = "CREATE TABLE NormalScore (" +
             "idScore INTEGER PRIMARY KEY AUTOINCREMENT," +
             "pseudo  TEXT," +
-            "score INTEGER," +
+            "score INTEGER" +
 
             ");";
     /**

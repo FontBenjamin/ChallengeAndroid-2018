@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context="challengeandroid2018.iteam.com.challengeandroid_2018.activities.ScoreActivity">
 
+    <ListView
+        android:layout_width="191dp"
+        android:layout_height="329dp"
+        tools:layout_editor_absoluteX="97dp"
+        tools:layout_editor_absoluteY="101dp"
+        android:id="@+id/listScore"
+        tools:ignore="MissingConstraints" />
+
 </android.support.constraint.ConstraintLayout>

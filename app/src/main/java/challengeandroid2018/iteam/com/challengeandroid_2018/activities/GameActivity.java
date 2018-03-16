@@ -13,7 +13,6 @@ import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.content.ContextCompat;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -228,16 +227,15 @@ public class GameActivity extends AppCompatActivity {
     public void addBump(){
         ImageView bump = new ImageView(context);
         bump.setAdjustViewBounds(true);
-        bump.setBackground(getResources().getDrawable(R.drawable.bomb));
+        bump.setBackground(getResources().getDrawable(R.drawable.spique));
         this.viewObstacleList.add(bump);
         bump.setId((int) Math.random());
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 0);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 150);
         bump.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
         constraintLayoutObstacleBump.addView(bump);
         set.clone(constraintLayoutObstacleBump);
         set.connect(bump.getId(),ConstraintSet.RIGHT,bump.getId(),ConstraintSet.RIGHT,0);
-        set.connect(bump.getId(), ConstraintSet.TOP, bump.getId(), ConstraintSet.TOP, 0);
         set.connect(bump.getId(), ConstraintSet.BOTTOM, bump.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(constraintLayoutObstacleBump);
         adding = false;
@@ -272,7 +270,6 @@ public class GameActivity extends AppCompatActivity {
         constraintLayoutObstacleBird.addView(bump);
         set.clone(constraintLayoutObstacleBird);
         set.connect(bump.getId(),ConstraintSet.RIGHT,bump.getId(),ConstraintSet.RIGHT,0);
-        set.connect(bump.getId(), ConstraintSet.TOP, bump.getId(), ConstraintSet.TOP, 0);
         set.connect(bump.getId(), ConstraintSet.BOTTOM, bump.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(constraintLayoutObstacleBird);
         adding = false;
@@ -296,7 +293,6 @@ public class GameActivity extends AppCompatActivity {
         constraintLayoutObstacleWall.addView(wall);
         set.clone(constraintLayoutObstacleWall);
         set.connect(wall.getId(),ConstraintSet.RIGHT,wall.getId(),ConstraintSet.RIGHT,0);
-        set.connect(wall.getId(), ConstraintSet.TOP, wall.getId(), ConstraintSet.TOP, 0);
         set.connect(wall.getId(), ConstraintSet.BOTTOM, wall.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(constraintLayoutObstacleWall);
         adding = false;

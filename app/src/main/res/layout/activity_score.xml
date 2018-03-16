@@ -19,12 +19,14 @@
 
             <TabWidget
                 android:id="@android:id/tabs"
+                android:textColor="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></TabWidget>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
+                android:textColor="@android:color/black"
                 android:layout_height="match_parent">
 
                 <LinearLayout
@@ -35,6 +37,7 @@
 
                     <TextView
                         android:id="@+id/textnormale"
+                        android:textColor="@android:color/black"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
@@ -48,6 +51,7 @@
 
                     <TextView
                         android:id="@+id/textspeed"
+                        android:textColor="@android:color/black"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>

@@ -24,7 +24,8 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
+        app:layout_constraintVertical_bias="0.55"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -43,7 +44,8 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.361" />
+        app:layout_constraintVertical_bias="0.361"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/textView"
@@ -54,7 +56,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
-        android:text="Mode de jeu"
+        android:text="Game over"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +64,8 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068" />
+        app:layout_constraintVertical_bias="0.068"
+        android:textColor="@android:color/black"/>
 
     <Button
         android:id="@+id/backMenuBtn"

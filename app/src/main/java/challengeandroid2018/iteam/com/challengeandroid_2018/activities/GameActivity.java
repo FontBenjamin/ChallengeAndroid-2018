@@ -25,6 +25,7 @@ import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -61,12 +62,16 @@ public class GameActivity extends AppCompatActivity {
     private TiltDetector mTiltDetector;
     private Sensor magnetometer;
     private int scores;
+    private TextView textViewScore;
+    private int speed;
+    private int gameMode;
 
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
     private boolean gameOver = false;
     private ValueAnimator va;
     private Timer timer = new Timer();
+    private Timer timerScore = new Timer();
     private boolean adding = false;
     private ConstraintLayout constraintLayoutFloor;
 
@@ -79,7 +84,7 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
-
+        this.textViewScore = findViewById(R.id.textViewScore);
         this.context = this;
         // we get the graphical elements
         this.imageViewCharacter = (ImageView) findViewById(R.id.imageViewCharacter);
@@ -130,8 +135,16 @@ public class GameActivity extends AppCompatActivity {
             Util.displayErrorAlert(AlertMessage.SENSOR_ERROR_TYPE, AlertMessage.SENSOR_ERROR, this);
         }
 
+        getGameMode();
+        this.speed = 5;
+
         //TODO update scores
         scores = 1;
+    }
+
+    private void getGameMode(){
+        Intent i = getIntent();
+        int gameMode = i.getIntExtra(Constant.INTENT_KEY_GAME_MODE, 0);
     }
 
     private void handleTiltEvent(int count) {
@@ -385,6 +398,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void animateObstacles(){
+       // incrementScore();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 //Looper.prepare();
@@ -442,7 +456,22 @@ public class GameActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 10, 5);
+        }, 10, speed);
+    }
+
+    private void incrementScore(){
+        timerScore.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                //Looper.prepare();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                       scores+= 1;
+                       textViewScore.setText("Score : " + scores);
+                    }
+                });
+            }
+        }, 10, 2000);
     }
 
 }

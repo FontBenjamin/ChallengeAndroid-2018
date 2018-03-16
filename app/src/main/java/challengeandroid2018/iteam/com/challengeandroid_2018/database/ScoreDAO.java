@@ -113,7 +113,7 @@ public class ScoreDAO {
         return scoreList;
     }
 
-    public List<Score> getAllSpeedScore(Context context) {
+    public static List<Score> getAllSpeedScore(Context context) {
         Score score = new Score("null", 0);
         List<Score> scoreList = new ArrayList<Score>();
         Cursor c = getDatabase(context).rawQuery("select pseudo,score from SpeedScore order by score", null);

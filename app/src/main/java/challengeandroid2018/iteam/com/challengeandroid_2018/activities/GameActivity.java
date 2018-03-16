@@ -1,5 +1,8 @@
 package challengeandroid2018.iteam.com.challengeandroid_2018.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -15,12 +18,16 @@ import android.support.constraint.ConstraintSet;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -83,25 +90,7 @@ public class GameActivity extends AppCompatActivity {
 
         // organizing the elements
         imageViewCharacter.bringToFront();
-        /**imageViewCharacter.setBackgroundResource(R.drawable.run);
-        AnimationDrawable anim = (AnimationDrawable) imageViewCharacter.getBackground();
-        anim.start();*/
-
-
         constraintLayoutFloor.bringToFront();
-        // we add the listeners
-        constraintLayoutGameActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                animateObstacles();
-            }
-        });
-        imageViewCharacter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                animateCharacterCrouch();
-            }
-        });
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -151,48 +140,64 @@ public class GameActivity extends AppCompatActivity {
      * make a jump animation on the view
      */
     public void animateCharacterJump(){
-        Animation jumpAnimation = AnimationUtils.loadAnimation(context, R.anim.jump_up);
-        jumpAnimation.setAnimationListener(new Animation.AnimationListener() {
-
+        final ValueAnimator va=ValueAnimator.ofFloat(0.0f,-400.0f);
+        va.setDuration(1000);
+        va.start();
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context, R.anim.jump_down);
-                imageViewCharacter.startAnimation(hyperspaceJumpAnimation);
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // TODO Auto-generated method stub
+                imageViewCharacter.setTranslationY((Float) va.getAnimatedValue());
             }
         });
-        this.imageViewCharacter.startAnimation(jumpAnimation);
+        va.addListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                final ValueAnimator va=ValueAnimator.ofFloat(-400.0f,0.0f);
+                va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        // TODO Auto-generated method stub
+                        imageViewCharacter.setTranslationY((Float) va.getAnimatedValue());
+                    }
+                });
+                va.setDuration(1000);
+                va.start();            }
+        });
     }
 
     /**
      * make a jump animation on the view
      */
     public void animateCharacterCrouch(){
-        Animation jumpAnimation = AnimationUtils.loadAnimation(context, R.anim.crouch_down);
-        jumpAnimation.setAnimationListener(new Animation.AnimationListener() {
-
+        final ValueAnimator va=ValueAnimator.ofFloat(0.0f,150.0f);
+        va.setDuration(1000);
+        va.start();
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context, R.anim.crouch_up);
-                imageViewCharacter.startAnimation(hyperspaceJumpAnimation);
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // TODO Auto-generated method stub
+                imageViewCharacter.setTranslationY((Float) va.getAnimatedValue());
             }
         });
-        this.imageViewCharacter.startAnimation(jumpAnimation);
+        va.addListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                final ValueAnimator va=ValueAnimator.ofFloat(150.0f,0.0f);
+                va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        // TODO Auto-generated method stub
+                        imageViewCharacter.setTranslationY((Float) va.getAnimatedValue());
+                    }
+                });
+                va.setDuration(1000);
+                va.start();            }
+        });
     }
 
 
@@ -218,6 +223,43 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         this.imageViewCharacter.startAnimation(jumpAnimation);
+        /** anim = new TranslateAnimation(0, 0, 0, 350);
+        anim.setDuration(1000);
+
+        anim.setAnimationListener(new TranslateAnimation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)imageViewCharacter.getLayoutParams();
+                params.topMargin += 350;
+                params.leftMargin += 0;
+                imageViewCharacter.setLayoutParams(params);
+            }
+        });
+        anim.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context, R.anim.break_left);
+                imageViewCharacter.startAnimation(hyperspaceJumpAnimation);
+            }
+        });
+        imageViewCharacter.startAnimation(anim);*/
     }
 
 
@@ -228,6 +270,7 @@ public class GameActivity extends AppCompatActivity {
         ImageView bump = new ImageView(context);
         bump.setAdjustViewBounds(true);
         bump.setBackground(getResources().getDrawable(R.drawable.spique));
+        bump.setBackgroundColor(Color.RED);
         this.viewObstacleList.add(bump);
         bump.setId((int) Math.random());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 150);
@@ -311,7 +354,10 @@ public class GameActivity extends AppCompatActivity {
                             viewObstacleList.get(i).setX(viewObstacleList.get(i).getX()-1);
                             viewObstacleList.get(i).bringToFront();
                             // handle colliding here
+
                             if(isViewOverlapping(viewObstacleList.get(i), imageViewCharacter) && gameOver == false){
+                                System.out.println("*************************");
+                                System.out.println(imageViewCharacter.getY());
                                 gameOver = true;
                                 Toast.makeText(context,"COLLISIOOOOOOON",Toast.LENGTH_SHORT).show();
                             }

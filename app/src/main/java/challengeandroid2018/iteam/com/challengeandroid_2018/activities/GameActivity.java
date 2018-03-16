@@ -65,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewScore;
     private int speed;
     private int gameMode;
+    private int speedCounter;
 
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
@@ -137,9 +138,12 @@ public class GameActivity extends AppCompatActivity {
 
         getGameMode();
         this.speed = 5;
+        this.speedCounter = 0;
 
         //TODO update scores
-        scores = 1;
+        scores = 0;
+        animateObstacles();
+        incrementScore();
     }
 
     private void getGameMode(){
@@ -375,6 +379,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewObstacleList.remove(wall);
+                constraintLayoutObstacleWall.removeView(wall);
             }
         });
 
@@ -397,7 +402,6 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void animateObstacles(){
-       // incrementScore();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 //Looper.prepare();
@@ -452,6 +456,11 @@ public class GameActivity extends AppCompatActivity {
                                 addWall();
                             }
                         }
+
+                        if(gameMode == 1 && speedCounter == 5 ){
+                            speed+= 2;
+                            speedCounter = 0;
+                        }
                     }
                 });
             }
@@ -467,6 +476,20 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                        scores+= 1;
                        textViewScore.setText("Score : " + scores);
+                    }
+                });
+            }
+        }, 10, 2000);
+    }
+
+    private void incrementSpeedCounter(){
+        timerScore.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                //Looper.prepare();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        speedCounter+= 1;
                     }
                 });
             }

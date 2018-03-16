@@ -55,6 +55,7 @@ public class GameActivity extends AppCompatActivity {
 
     private Timer timer = new Timer();
     private boolean adding = false;
+    private ConstraintLayout constraintLayoutFloor;
 
 
     @Override
@@ -73,11 +74,16 @@ public class GameActivity extends AppCompatActivity {
         this.constraintLayoutObstacleBump = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleBump);
         this.constraintLayoutObstacleWall = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleWall);
         this.constraintLayoutGameActivity = (ConstraintLayout) findViewById(R.id.constraintLayoutGameActivity);
-        animateObstacles();
+        this.constraintLayoutFloor = (ConstraintLayout) findViewById(R.id.constraintLayoutFloor);
+
+        // organizing the elements
+        imageViewCharacter.bringToFront();
+        constraintLayoutFloor.bringToFront();
         // we add the listeners
         constraintLayoutGameActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                animateObstacles();
 
             }
         });
@@ -211,19 +217,19 @@ public class GameActivity extends AppCompatActivity {
      */
     public void addBump(){
         ImageView bump = new ImageView(context);
+        this.viewObstacleList.add(bump);
         bump.setBackgroundColor(Color.RED);
         bump.setId((int) Math.random());
         bump.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background));
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(300, 0);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 150);
         bump.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
-        constraintLayoutObstacleBump.addView(bump,0);
+        constraintLayoutObstacleBump.addView(bump);
         set.clone(constraintLayoutObstacleBump);
         set.connect(bump.getId(),ConstraintSet.RIGHT,bump.getId(),ConstraintSet.RIGHT,0);
         set.connect(bump.getId(), ConstraintSet.TOP, bump.getId(), ConstraintSet.TOP, 0);
         set.connect(bump.getId(), ConstraintSet.BOTTOM, bump.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(constraintLayoutObstacleBump);
-        this.viewObstacleList.add(bump);
         adding = false;
     }
 
@@ -247,19 +253,19 @@ public class GameActivity extends AppCompatActivity {
      */
     public void addBird(){
         ImageView bump = new ImageView(context);
+        this.viewObstacleList.add(bump);
         bump.setBackgroundColor(Color.RED);
         bump.setId((int) Math.random());
         bump.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background));
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(300, 0);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(150, 150);
         bump.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
-        constraintLayoutObstacleBird.addView(bump,0);
+        constraintLayoutObstacleBird.addView(bump);
         set.clone(constraintLayoutObstacleBird);
         set.connect(bump.getId(),ConstraintSet.RIGHT,bump.getId(),ConstraintSet.RIGHT,0);
         set.connect(bump.getId(), ConstraintSet.TOP, bump.getId(), ConstraintSet.TOP, 0);
         set.connect(bump.getId(), ConstraintSet.BOTTOM, bump.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(constraintLayoutObstacleBird);
-        this.viewObstacleList.add(bump);
         adding = false;
 
     }
@@ -271,19 +277,19 @@ public class GameActivity extends AppCompatActivity {
     public void addWall(){
         // add the bottom part of the wall
         ImageView wall = new ImageView(context);
+        this.viewObstacleList.add(wall);
         wall.setBackgroundColor(Color.RED);
         wall.setId((int) Math.random());
         wall.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background));
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 0);
         wall.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
-        constraintLayoutObstacleWall.addView(wall,0);
+        constraintLayoutObstacleWall.addView(wall);
         set.clone(constraintLayoutObstacleWall);
         set.connect(wall.getId(),ConstraintSet.RIGHT,wall.getId(),ConstraintSet.RIGHT,0);
         set.connect(wall.getId(), ConstraintSet.TOP, wall.getId(), ConstraintSet.TOP, 0);
         set.connect(wall.getId(), ConstraintSet.BOTTOM, wall.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(constraintLayoutObstacleWall);
-        this.viewObstacleList.add(wall);
         adding = false;
 
     }
@@ -297,15 +303,31 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         for(int i = 0; i < viewObstacleList.size();i++){
-                            View v = viewObstacleList.get(i);
-                            v.setX(v.getX()-1);
+                            viewObstacleList.get(i).setX(viewObstacleList.get(i).getX()-1);
+                            viewObstacleList.get(i).bringToFront();
                             // handle colliding here
-                            if(isViewOverlapping(v, imageViewCharacter) && gameOver == false){
+                            if(isViewOverlapping(viewObstacleList.get(i), imageViewCharacter) && gameOver == false){
                                 gameOver = true;
                                 Toast.makeText(context,"COLLISIOOOOOOON",Toast.LENGTH_SHORT).show();
                             }
-                            if(!isViewOverlapping(constraintLayoutGameActivity, v)) {
-                                viewObstacleList.remove(v);
+                            if(!isViewOverlapping(constraintLayoutGameActivity, viewObstacleList.get(i))) {
+                                try {
+                                    constraintLayoutObstacleBump.removeView(viewObstacleList.get(i));
+                                }catch(Exception e){
+
+                                }
+                                try {
+                                    constraintLayoutObstacleBird.removeView(viewObstacleList.get(i));
+                                }catch(Exception e){
+
+                                }
+                                try {
+                                    constraintLayoutObstacleWall.removeView(viewObstacleList.get(i));
+                                }catch(Exception e){
+
+                                }
+                                viewObstacleList.remove(viewObstacleList.get(i));
+
                             }
                         }
                         if(viewObstacleList.isEmpty() && !adding){
@@ -322,10 +344,8 @@ public class GameActivity extends AppCompatActivity {
                         }
                     }
                 });
-
             }
-
-        }, 0, 5);
+        }, 10, 5);
     }
 
 }

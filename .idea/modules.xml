@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ChallengeAndroid-2018.iml" filepath="$PROJECT_DIR$/ChallengeAndroid-2018.iml" />
       <module fileurl="file://C:\Users\fontb\Documents\AndroidStudioProject\ChallengeAndroid2018\ChallengeAndroid-2018.iml" filepath="C:\Users\fontb\Documents\AndroidStudioProject\ChallengeAndroid2018\ChallengeAndroid-2018.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ChallengeAndroid2018.iml" filepath="$PROJECT_DIR$/ChallengeAndroid2018.iml" />
+      <module fileurl="file://C:\Users\Marianna\Projets-M2\challenge-android\ChallengeAndroid-2018\ChallengeAndroid2018.iml" filepath="C:\Users\Marianna\Projets-M2\challenge-android\ChallengeAndroid-2018\ChallengeAndroid2018.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

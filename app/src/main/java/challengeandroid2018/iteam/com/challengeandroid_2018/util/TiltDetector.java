@@ -58,6 +58,7 @@ public class TiltDetector  implements SensorEventListener {
                 }
                 else if (isTiltUpward())
                 {
+                    mListener.onTilt(0);
                     Log.d("test", "upwards");
                 }
 

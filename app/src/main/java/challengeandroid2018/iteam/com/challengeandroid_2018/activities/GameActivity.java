@@ -65,7 +65,7 @@ public class GameActivity extends AppCompatActivity {
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
     private boolean gameOver = false;
-
+    private ValueAnimator va;
     private Timer timer = new Timer();
     private boolean adding = false;
     private ConstraintLayout constraintLayoutFloor;
@@ -135,11 +135,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleTiltEvent(int count) {
+        animateCharacterCrouch();
         Log.d("Tilt !", "Don't bend your knees !");
 
     }
 
     private void handleShakeEvent(int count) {
+        animateCharacterJump();
         Log.d("Shake ! Shake !", "Shake your milkshake !");
     }
 
@@ -298,7 +300,6 @@ public class GameActivity extends AppCompatActivity {
         ImageView bump = new ImageView(context);
         bump.setAdjustViewBounds(true);
         bump.setBackground(getResources().getDrawable(R.drawable.spique));
-        bump.setBackgroundColor(Color.RED);
         this.viewObstacleList.add(bump);
         bump.setId((int) Math.random());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 150);
@@ -356,7 +357,15 @@ public class GameActivity extends AppCompatActivity {
      */
     public void addWall(){
         // add the bottom part of the wall
-        ImageView wall = new ImageView(context);
+        final ImageView wall = new ImageView(context);
+        wall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewObstacleList.remove(wall);
+            }
+        });
+
+
         wall.setAdjustViewBounds(true);
         this.viewObstacleList.add(wall);
         wall.setId((int) Math.random());

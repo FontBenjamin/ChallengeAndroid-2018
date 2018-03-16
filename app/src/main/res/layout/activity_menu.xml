@@ -11,56 +11,51 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="@string/app_name"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:cursorVisible="false"/>
 
-            <EditText
-                android:id="@+id/pseudoEditText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:hint="Pseudo"
-                android:inputType="textCapSentences" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/appImageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="175dp"
+            app:srcCompat="@drawable/logo"
+            android:layout_marginTop="20dp" />
 
-                <ImageView
-                    android:id="@+id/appImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/ic_launcher_round" />
+        <EditText
+            android:id="@+id/pseudoEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pseudo"
+            android:gravity="center"
+            android:inputType="textCapSentences" />
 
-                <Button
-                    android:id="@+id/playButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Jouer" />
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jouer"
+            android:layout_marginTop="40dp"/>
 
-                <Button
-                    android:id="@+id/scoresButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Scores" />
+        <Button
+            android:id="@+id/scoresButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scores" />
 
-                <Button
-                    android:id="@+id/creditButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Crédits" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/creditButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crédits" />
 
     </LinearLayout>
 

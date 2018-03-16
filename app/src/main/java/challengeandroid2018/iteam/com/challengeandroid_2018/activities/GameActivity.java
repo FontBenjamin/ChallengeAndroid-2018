@@ -32,6 +32,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import challengeandroid2018.iteam.com.challengeandroid_2018.R;
+import challengeandroid2018.iteam.com.challengeandroid_2018.model.GameModeEnum;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.Constant;
 import util.AlertMessage;
 import util.GifAnimationDrawable;
 import util.GifImageView;
@@ -59,6 +61,7 @@ public class GameActivity extends AppCompatActivity {
     private ShakeDetector mShakeDetector;
     private TiltDetector mTiltDetector;
     private Sensor magnetometer;
+    private int scores;
 
     private ArrayList<View> viewObstacleList = new ArrayList<>();
 
@@ -145,6 +148,9 @@ public class GameActivity extends AppCompatActivity {
         }else{
             Util.displayErrorAlert(AlertMessage.SENSOR_ERROR_TYPE, AlertMessage.SENSOR_ERROR, this);
         }
+
+        //TODO update scores
+        scores = 1;
     }
 
     private void handleTiltEvent(int count) {
@@ -349,6 +355,11 @@ public class GameActivity extends AppCompatActivity {
                             // handle colliding here
                             if(isViewOverlapping(viewObstacleList.get(i), imageViewCharacter) && gameOver == false){
                                 gameOver = true;
+                                Intent gameOverIntent = new Intent(GameActivity.this, GameOverActivity.class);
+                                gameOverIntent.putExtra(Constant.INTENT_KEY_PLAYER_SCORE, scores);
+                                startActivity(gameOverIntent);
+                                
+                                finish();
                                 Toast.makeText(context,"COLLISIOOOOOOON",Toast.LENGTH_SHORT).show();
                             }
                             if(!isViewOverlapping(constraintLayoutGameActivity, viewObstacleList.get(i))) {

@@ -24,14 +24,14 @@ public class GameOverActivity extends AppCompatActivity {
 
         //Retrieve the timetable link to display
         Intent i = getIntent();
-        String score = i.getStringExtra(Constant.INTENT_KEY_PLAYER_SCORE);
+        int score = i.getIntExtra(Constant.INTENT_KEY_PLAYER_SCORE, 0);
 
         // Recovering of pseudo from SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Context.MODE_PRIVATE);
         String pseudo = sharedPref.getString(Constant.SHARED_PREFERENCES_KEY_PSEUDO, Constant.SHARED_PREFERENCES_KEY_PSEUDO);
 
         this.scoreTxt = findViewById(R.id.scoreTxt);
-        this.scoreTxt.append(score);
+        this.scoreTxt.append(score + "");
 
         this.backMenuBtn = findViewById(R.id.backMenuBtn);
         this.backMenuBtn.setOnClickListener(new View.OnClickListener() {

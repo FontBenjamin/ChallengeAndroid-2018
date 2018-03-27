@@ -43,13 +43,14 @@ import challengeandroid2018.iteam.com.challengeandroid_2018.model.GameModeEnum;
 import challengeandroid2018.iteam.com.challengeandroid_2018.model.Score;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.Constant;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.AlertMessage;
+import challengeandroid2018.iteam.com.challengeandroid_2018.util.GifImageView;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.ShakeDetector;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.TiltDetector;
 import challengeandroid2018.iteam.com.challengeandroid_2018.util.Util;
 
 public class GameActivity extends AppCompatActivity {
 
-    private VideoView imageViewCharacter;
+    private GifImageView imageViewCharacter;
 
     private ConstraintLayout constraintLayoutGameActivity;
 
@@ -94,7 +95,7 @@ public class GameActivity extends AppCompatActivity {
         this.textViewScore = findViewById(R.id.textViewScore);
         this.context = this;
         // we get the graphical elements
-        this.imageViewCharacter = (VideoView) findViewById(R.id.imageViewCharacter);
+        this.imageViewCharacter = (GifImageView) findViewById(R.id.imageViewCharacter);
         this.constraintLayoutObstacleBird = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleBird);
         this.constraintLayoutObstacleBump = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleBump);
         this.constraintLayoutObstacleWall = (ConstraintLayout) findViewById(R.id.constraintLayoutObstacleWall);
@@ -104,14 +105,8 @@ public class GameActivity extends AppCompatActivity {
         // organizing the elements
         imageViewCharacter.bringToFront();
         String path = "android.resource://" + getPackageName() + "/" + R.raw.videorun;
-        imageViewCharacter.setVideoURI(Uri.parse(path));
-        imageViewCharacter.start();
-        imageViewCharacter.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-            }
-        });
+        imageViewCharacter.setGifImageResource(R.raw.run);
+
         constraintLayoutFloor.bringToFront();
 
         // ShakeDetector initialization
@@ -152,12 +147,24 @@ public class GameActivity extends AppCompatActivity {
         }
 
         getGameMode();
-        this.speed = 5;
+        this.speed = 2;
         this.speedCounter = 0;
 
         scores = 0;
         animateObstacles();
         incrementScore();
+        findViewById(R.id.floatingActionButtonUp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateCharacterJump();
+            }
+        });
+        findViewById(R.id.floatingActionButtonDown).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateCharacterCrouch();
+            }
+        });
     }
 
     private void getGameMode() {
@@ -233,7 +240,7 @@ public class GameActivity extends AppCompatActivity {
      * make a jump animation on the view
      */
     public void animateCharacterCrouch(){
-        final ValueAnimator va=ValueAnimator.ofFloat(0.0f,150.0f);
+        final ValueAnimator va=ValueAnimator.ofFloat(0.0f,300.0f);
         va.setDuration(1000);
         va.start();
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -248,7 +255,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation)
             {
-                final ValueAnimator va=ValueAnimator.ofFloat(150.0f,0.0f);
+                final ValueAnimator va=ValueAnimator.ofFloat(300.0f,0.0f);
                 va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -366,16 +373,9 @@ public class GameActivity extends AppCompatActivity {
      * add a bump view on the layout and start moving it
      */
     public void addBird(){
-        VideoView bump = new VideoView(context);
+        GifImageView bump = new GifImageView(context);
         String path = "android.resource://" + getPackageName() + "/" + R.raw.shuriken;
-        bump.setVideoURI(Uri.parse(path));
-        bump.start();
-        bump.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-            }
-        });
+        bump.setGifImageResource(R.raw.bird);
         this.viewObstacleList.add(bump);
         bump.setId((int) Math.random());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
@@ -410,7 +410,7 @@ public class GameActivity extends AppCompatActivity {
         this.viewObstacleList.add(wall);
         wall.setId((int) Math.random());
         wall.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.wall));
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(50, 0);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(75, 0);
         wall.setLayoutParams(layoutParams);
         ConstraintSet set = new ConstraintSet();
         constraintLayoutObstacleWall.addView(wall);
@@ -431,7 +431,7 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         for(int i = 0; i < viewObstacleList.size();i++){
-                            viewObstacleList.get(i).setX(viewObstacleList.get(i).getX()-5);
+                            viewObstacleList.get(i).setX(viewObstacleList.get(i).getX()-1);
                             viewObstacleList.get(i).bringToFront();
                             // handle colliding here
 
